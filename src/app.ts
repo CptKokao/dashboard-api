@@ -1,28 +1,24 @@
 import express, { Express } from "express";
 import { Server } from "http";
-import { UserController } from "./users/users.controller";
-import { LoggerService } from "./logger/logger.service";
+import { inject, injectable } from "inversify";
 import { ExceptionFilter } from "./errors/exception.filter";
-import { ILogger } from "./logger/logger.interface";
+import { LoggerService } from "./logger/logger.service";
+import { TYPES } from "./types";
+import { UserController } from "./users/users.controller";
 
+@injectable()
 export class App {
   app: Express;
   server: Server;
   port: number;
-  logger: ILogger;
-  userController: UserController;
-  exceptionFilter: ExceptionFilter;
 
   constructor(
-    logger: ILogger,
-    userController: UserController,
-    exceptionFilter: ExceptionFilter
+    @inject(TYPES.ILogger) private logger: LoggerService,
+    @inject(TYPES.UserController) private userController: UserController,
+    @inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter
   ) {
     this.app = express();
     this.port = 8000;
-    this.logger = logger;
-    this.userController = userController;
-    this.exceptionFilter = exceptionFilter;
   }
 
   useRouters() {
@@ -37,6 +33,6 @@ export class App {
     this.useRouters();
     this.useExceptionFilters();
     this.server = this.app.listen(this.port);
-    console.log(`Сервер запущен на http://localhost:${this.port}`);
+    this.logger.log(`Сервер запущен на http://localhost:${this.port}`);
   }
 }
