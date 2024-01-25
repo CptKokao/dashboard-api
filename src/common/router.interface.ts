@@ -5,7 +5,7 @@ export interface IControllerRoute {
 	path: string;
 	func: (req: Request, res: Response, next: NextFunction) => void;
 	method: 'get' | 'post' | 'delete' | 'patch' | 'put';
-	middleware?: IMiddleware[];
+	middlewares?: IMiddleware[];
 	//   method2: keyof Pick<Router, "get" | "post" | "delete" | "patch" | "put">;
 }
 
