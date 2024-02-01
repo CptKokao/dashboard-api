@@ -6,6 +6,7 @@ import { LoggerService } from './logger/logger.service';
 import { TYPES } from './types';
 import { UserController } from './users/users.controller';
 import { json } from 'body-parser';
+import { IConfigService } from './config/config.service.interface';
 
 @injectable()
 export class App {
@@ -17,6 +18,7 @@ export class App {
 		@inject(TYPES.ILogger) private logger: LoggerService,
 		@inject(TYPES.UserController) private userController: UserController,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: ExceptionFilter,
+		@inject(TYPES.ConfigService) private ConfigService: IConfigService,
 	) {
 		this.app = express();
 		this.port = 8000;
